@@ -1,8 +1,8 @@
 Open Watcom Linker Version 2.0 beta Oct 20 2023 01:52:41 (32-bit)
 Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       23/11/04 22:58:08
-Executable Image: /home/been/code/asm/os/build/main.bin
+Created on:       23/11/05 21:11:48
+Executable Image: /media/been/External/code/asm/os/build/main.bin
 creating a RAW Binary Image executable
 
 
@@ -13,7 +13,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          0000066c             00000004
+DGROUP                          000008c0             00000000
 
 
 
@@ -25,10 +25,10 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00000000        0000005d
-_TEXT                  CODE           AUTO           0000005d        0000060f
-CONST                  DATA           DGROUP         0000066c        00000004
-CONST2                 DATA           DGROUP         00000670        00000000
-_DATA                  DATA           DGROUP         00000670        00000000
+_TEXT                  CODE           AUTO           0000005d        00000862
+CONST                  DATA           DGROUP         000008c0        00000000
+CONST2                 DATA           DGROUP         000008c0        00000000
+_DATA                  DATA           DGROUP         000008c0        00000000
 
 
                         +----------------+
@@ -41,23 +41,31 @@ _DATA                  DATA           DGROUP         00000670        00000000
 Address        Symbol
 =======        ======
 
-Module: /home/been/code/asm/os/build/main/asm/cpu.obj(cpu.asm)
-0000005d       _asm_tt_printc
-Module: /home/been/code/asm/os/build/main/asm/main.obj(main.asm)
+Module: /media/been/External/code/asm/os/build/main/asm/cpu.obj(cpu.asm)
+0000005d       __U4D
+00000084       _asm_tt_printc
+000000a2       _asm_disk_reset
+000000b8       _asm_disk_read
+000000f0       _asm_disk_get_parameters
+Module: /media/been/External/code/asm/os/build/main/asm/main.obj(main.asm)
 00000000       entry
-Module: /home/been/code/asm/os/build/main/c/main.obj(/home/been/code/asm/os/src/bootloader/main/main.c)
-0000007b       _boot_main
-Module: /home/been/code/asm/os/build/main/c/math.obj(/home/been/code/asm/os/src/bootloader/main/math.c)
-000000b4+      max_
-0000010e+      intlen_
-Module: /home/been/code/asm/os/build/main/c/stdio.obj(/home/been/code/asm/os/src/bootloader/main/stdio.c)
-0000015b+      strlen_
-0000019a+      str_reverse_
-00000216+      printc_tt_
-0000023d       _prints_tt
-0000028c+      printd_tt_
-000002e5+      itoa_
-000003c0       _printf_tt
+Module: /media/been/External/code/asm/os/build/main/c/disk.obj(/media/been/External/code/asm/os/src/bootloader/main/disk.c)
+00000136+      Disk_Init_
+000001aa+      Disk_LBA_To_CHS_
+0000025d+      Disk_ReadSectors_
+Module: /media/been/External/code/asm/os/build/main/c/main.obj(/media/been/External/code/asm/os/src/bootloader/main/main.c)
+000002f8       _boot_main
+Module: /media/been/External/code/asm/os/build/main/c/math.obj(/media/been/External/code/asm/os/src/bootloader/main/math.c)
+00000307+      max_
+00000361+      intlen_
+Module: /media/been/External/code/asm/os/build/main/c/stdio.obj(/media/been/External/code/asm/os/src/bootloader/main/stdio.c)
+000003ae+      strlen_
+000003ed+      str_reverse_
+00000469+      printc_tt_
+00000490       _prints_tt
+000004df+      printd_tt_
+00000538+      itoa_
+00000613+      _printf_tt
 
 
                         +---------------------+
@@ -70,23 +78,28 @@ c = initialized communal data
 Module          Segment               Class           Address         Size
 ======          =======               =====           =======         ====
 
-cpu.asm         _TEXT                 CODE           0000005d         0000001e
+cpu.asm         _TEXT                 CODE           0000005d         000000d9
 main.asm        _ENTRY                CODE           00000000         0000005d
-/home/been/code/asm/os/src/bootloader/main/main.c
-                _TEXT                 CODE           0000007b         00000039
-                CONST                 DATA           0000066c         00000004
-                CONST2                DATA           00000670         00000000
-                _DATA                 DATA           00000670         00000000
-/home/been/code/asm/os/src/bootloader/main/math.c
-                _TEXT                 CODE           000000b4         000000a7
-                CONST                 DATA           00000670         00000000
-                CONST2                DATA           00000670         00000000
-                _DATA                 DATA           00000670         00000000
-/home/been/code/asm/os/src/bootloader/main/stdio.c
-                _TEXT                 CODE           0000015b         00000511
-                CONST                 DATA           00000670         00000000
-                CONST2                DATA           00000670         00000000
-                _DATA                 DATA           00000670         00000000
+/media/been/External/code/asm/os/src/bootloader/main/disk.c
+                _TEXT                 CODE           00000136         000001c2
+                CONST                 DATA           000008c0         00000000
+                CONST2                DATA           000008c0         00000000
+                _DATA                 DATA           000008c0         00000000
+/media/been/External/code/asm/os/src/bootloader/main/main.c
+                _TEXT                 CODE           000002f8         0000000f
+                CONST                 DATA           000008c0         00000000
+                CONST2                DATA           000008c0         00000000
+                _DATA                 DATA           000008c0         00000000
+/media/been/External/code/asm/os/src/bootloader/main/math.c
+                _TEXT                 CODE           00000307         000000a7
+                CONST                 DATA           000008c0         00000000
+                CONST2                DATA           000008c0         00000000
+                _DATA                 DATA           000008c0         00000000
+/media/been/External/code/asm/os/src/bootloader/main/stdio.c
+                _TEXT                 CODE           000003ae         00000511
+                CONST                 DATA           000008c0         00000000
+                CONST2                DATA           000008c0         00000000
+                _DATA                 DATA           000008c0         00000000
 Warning! W1014: stack segment not found
 
 
@@ -95,6 +108,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  0200 (512.)
-Memory size:  0670 (1648.)
+Memory size:  08c0 (2240.)
 Entry point address: 00000000
 Link time: 00:00.00

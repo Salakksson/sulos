@@ -1,6 +1,6 @@
-#define byte        uint8_t
-#define word        uint16_t
-#define dword       uint32_t
+#define byte        unsigned char
+#define word        unsigned short
+#define dword       unsigned long int
 #define nullptr     0
 #define null        0
 #define bool        unsigned char

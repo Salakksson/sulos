@@ -15,6 +15,25 @@ section _TEXT class=CODE
 %define INT_KEYBOARD 0X16	;Keyboard input interrupt
 %define INT_RTC		 0x1A	;Real time clock
 
+global __U4D
+__U4D:
+	shl edx, 16 		; Dx to upper half of edx
+	mov dx, ax
+	mov eax, edx
+	xor edx, edx
+
+	shl ecx, 16
+	mov cx, bx
+
+	div ecx
+	mov ebx, edx
+	mov ecx, edx
+	shr ecx, 16
+
+	mov edx, eax
+	shr edx, 16
+
+	ret
 ;
 ; Prints string in Teletype output
 ; Arguments:
@@ -98,9 +117,9 @@ _asm_disk_read:
 	mov cl, [bp + 7]		; Cylinder bits 6-7
 	shl cl, 6
 
-	mov dh, [bp + 8]		; Head number
+	mov dh, [bp + 10]		; Head number
 
-	mov al, [bp + 10]
+	mov al, [bp + 8]
 	and al, 3Fh
 	or cl, al				; Sector bits 0-5
 

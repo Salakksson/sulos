@@ -1,0 +1,80 @@
+Open Watcom Linker Version 2.0 beta Oct 20 2023 01:52:41 (32-bit)
+Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       23/10/31 20:25:49
+Executable Image: build/main.bin
+creating a RAW Binary Image executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          000000c4             00000000
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+_ENTRY                 CODE           AUTO           00000000        00000099
+_TEXT                  CODE           AUTO           00000099        0000002b
+CONST                  DATA           DGROUP         000000c4        00000000
+CONST2                 DATA           DGROUP         000000c4        00000000
+_DATA                  DATA           DGROUP         000000c4        00000000
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: build/main/asm/main.obj(main.asm)
+00000000       entry
+Module: build/main/asm/os.obj(os.asm)
+00000099       tt_prints
+000000aa       key_reboot
+Module: build/main/c/main.obj(/home/been/code/asm/os/src/bootloader/main/main.c)
+000000b5       _boot_main
+
+
+                        +---------------------+
+                        |   Module Segments   |
+                        +---------------------+
+
+! = 32-bit segment
+c = initialized communal data
+
+Module          Segment               Class           Address         Size
+======          =======               =====           =======         ====
+
+main.asm        _ENTRY                CODE           00000000         00000099
+os.asm          _TEXT                 CODE           00000099         0000001c
+/home/been/code/asm/os/src/bootloader/main/main.c
+                _TEXT                 CODE           000000b5         0000000f
+                CONST                 DATA           000000c4         00000000
+                CONST2                DATA           000000c4         00000000
+                _DATA                 DATA           000000c4         00000000
+Warning! W1014: stack segment not found
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  0200 (512.)
+Memory size:  00c4 (196.)
+Entry point address: 00000000
+Link time: 00:00.00

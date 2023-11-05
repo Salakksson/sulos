@@ -380,7 +380,7 @@ str_testt:				db '22', ENDL, 0
 str_read_error: 		db 'err mem', ENDL, 0
 str_main_error:			db 'err kern', ENDL, 0
 str_main_filename:		db 'MAIN    BIN'
-str_bootmsg:			db 'booting...' ENDL, 0
+str_bootmsg:			db 'booting...', ENDL, 0
 main_cluster:			dw 0
 char_endl:				db ENDL, 0
 

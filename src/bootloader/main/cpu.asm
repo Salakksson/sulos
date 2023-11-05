@@ -64,14 +64,13 @@ _asm_tt_printc:
 ;		beginning of the BIOS
 ;
 global _asm_key_reboot
-_asm_tt_key_reboot:
+_asm_key_reboot:
     mov ah, 0
 	int INT_KEYBOARD
 	jmp 0FFFFh:0
 
 	cli
 	hlt
-
 ;
 ; void _cdecl asm_disk_reset(byte drive);
 ;

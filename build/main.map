@@ -1,8 +1,8 @@
-Open Watcom Linker Version 2.0 beta Oct 20 2023 01:52:41 (32-bit)
+Open Watcom Linker Version 2.0 beta Oct 20 2023 01:52:49 (64-bit)
 Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       23/11/05 21:11:48
-Executable Image: /media/been/External/code/asm/os/build/main.bin
+Created on:       23/11/05 22:50:31
+Executable Image: /workspaces/pushos/build/main.bin
 creating a RAW Binary Image executable
 
 
@@ -41,31 +41,32 @@ _DATA                  DATA           DGROUP         000008c0        00000000
 Address        Symbol
 =======        ======
 
-Module: /media/been/External/code/asm/os/build/main/asm/cpu.obj(cpu.asm)
+Module: /workspaces/pushos/build/main/asm/cpu.obj(cpu.asm)
 0000005d       __U4D
 00000084       _asm_tt_printc
+00000097       _asm_key_reboot
 000000a2       _asm_disk_reset
 000000b8       _asm_disk_read
 000000f0       _asm_disk_get_parameters
-Module: /media/been/External/code/asm/os/build/main/asm/main.obj(main.asm)
+Module: /workspaces/pushos/build/main/asm/main.obj(main.asm)
 00000000       entry
-Module: /media/been/External/code/asm/os/build/main/c/disk.obj(/media/been/External/code/asm/os/src/bootloader/main/disk.c)
-00000136+      Disk_Init_
-000001aa+      Disk_LBA_To_CHS_
-0000025d+      Disk_ReadSectors_
-Module: /media/been/External/code/asm/os/build/main/c/main.obj(/media/been/External/code/asm/os/src/bootloader/main/main.c)
-000002f8       _boot_main
-Module: /media/been/External/code/asm/os/build/main/c/math.obj(/media/been/External/code/asm/os/src/bootloader/main/math.c)
-00000307+      max_
-00000361+      intlen_
-Module: /media/been/External/code/asm/os/build/main/c/stdio.obj(/media/been/External/code/asm/os/src/bootloader/main/stdio.c)
-000003ae+      strlen_
-000003ed+      str_reverse_
-00000469+      printc_tt_
-00000490       _prints_tt
-000004df+      printd_tt_
-00000538+      itoa_
-00000613+      _printf_tt
+Module: /workspaces/pushos/build/main/c/stdio.obj(/workspaces/pushos/src/bootloader/main/stdio.c)
+00000136+      strlen_
+00000175+      str_reverse_
+000001f1+      printc_tt_
+00000218       _prints_tt
+00000267+      printd_tt_
+000002c0+      itoa_
+0000039b+      _printf_tt
+Module: /workspaces/pushos/build/main/c/math.obj(/workspaces/pushos/src/bootloader/main/math.c)
+00000647+      max_
+000006a1+      intlen_
+Module: /workspaces/pushos/build/main/c/main.obj(/workspaces/pushos/src/bootloader/main/main.c)
+000006ee       _boot_main
+Module: /workspaces/pushos/build/main/c/disk.obj(/workspaces/pushos/src/bootloader/main/disk.c)
+000006fd+      Disk_Init_
+00000771+      Disk_LBA_To_CHS_
+00000824+      Disk_ReadSectors_
 
 
                         +---------------------+
@@ -80,23 +81,23 @@ Module          Segment               Class           Address         Size
 
 cpu.asm         _TEXT                 CODE           0000005d         000000d9
 main.asm        _ENTRY                CODE           00000000         0000005d
-/media/been/External/code/asm/os/src/bootloader/main/disk.c
-                _TEXT                 CODE           00000136         000001c2
+/workspaces/pushos/src/bootloader/main/stdio.c
+                _TEXT                 CODE           00000136         00000511
                 CONST                 DATA           000008c0         00000000
                 CONST2                DATA           000008c0         00000000
                 _DATA                 DATA           000008c0         00000000
-/media/been/External/code/asm/os/src/bootloader/main/main.c
-                _TEXT                 CODE           000002f8         0000000f
+/workspaces/pushos/src/bootloader/main/math.c
+                _TEXT                 CODE           00000647         000000a7
                 CONST                 DATA           000008c0         00000000
                 CONST2                DATA           000008c0         00000000
                 _DATA                 DATA           000008c0         00000000
-/media/been/External/code/asm/os/src/bootloader/main/math.c
-                _TEXT                 CODE           00000307         000000a7
+/workspaces/pushos/src/bootloader/main/main.c
+                _TEXT                 CODE           000006ee         0000000f
                 CONST                 DATA           000008c0         00000000
                 CONST2                DATA           000008c0         00000000
                 _DATA                 DATA           000008c0         00000000
-/media/been/External/code/asm/os/src/bootloader/main/stdio.c
-                _TEXT                 CODE           000003ae         00000511
+/workspaces/pushos/src/bootloader/main/disk.c
+                _TEXT                 CODE           000006fd         000001c2
                 CONST                 DATA           000008c0         00000000
                 CONST2                DATA           000008c0         00000000
                 _DATA                 DATA           000008c0         00000000
@@ -110,4 +111,4 @@ Warning! W1014: stack segment not found
 Stack size:  0200 (512.)
 Memory size:  08c0 (2240.)
 Entry point address: 00000000
-Link time: 00:00.00
+Link time: 00:00.89

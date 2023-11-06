@@ -6,12 +6,14 @@
                 "${workspaceFolder}/**"
             ],
             "defines": [
-                "_cdecl="
+                "_cdecl=",
+                "near=",
+                "far="
             ],
-            "compilerPath": "/usr/bin/watcom/binl/wcc",
+            "compilerPath": "/usr/bin/watcom/binl64/wcc",
             "cStandard": "c99",
             "cppStandard": "c++14",
-            "intelliSenseMode": "linux-clang-x64",
+            "intelliSenseMode": "clang-x64",
             "compilerArgs": [
                 "-4 -d3 -s -wx -ms -zl -zq -za99 -fr=/dev/null"
             ]

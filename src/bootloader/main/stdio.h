@@ -1,3 +1,5 @@
+#pragma once
+
 #include "defs.h"
 
 void _cdecl asm_tt_printc(char c, byte page);

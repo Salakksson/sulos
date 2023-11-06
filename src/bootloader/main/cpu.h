@@ -1,4 +1,4 @@
-
+#pragma once
 
 void _cdecl asm_key_reboot();
 

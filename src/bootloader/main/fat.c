@@ -69,7 +69,7 @@ bool FAT_Initialize(Disk* disk)
         return false;
     }
 
-    g_FAT = (byte far*)g_Data + dizeof(FAT_Data);
+    g_FAT = (byte far*)g_Data + sizeof(FAT_Data);
     dword fatSize = g_Data->BS.BootSector.BytesPerSector * g_Data->BS.BootSector.SectorsPerFat;
     if (sizeof(FAT_Data) + fatSize >= MEMORY_FAT_SIZE)
     {
@@ -84,5 +84,5 @@ bool FAT_Initialize(Disk* disk)
         ERROR_MESG = FAT_ReadFailed_Mesg;
         return false;
     }
-    
+
 }

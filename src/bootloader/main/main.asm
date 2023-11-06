@@ -9,7 +9,7 @@ section _ENTRY class=CODE
 %define NULL 0x0			;Null
 							;
 							;
-							;BIOS INTERRUPT CALLS: AH IN HEX AND ONLY NOTABLE ARE SHOWN
+							;BIOS INTERRUPT CALLS:
 %define INT_VIDEO	 0x10	;All video services
 %define INT_DISK	 0x13	;Low level disk services
 %define INT_KEYBOARD 0X16	;Keyboard input interrupt

@@ -9,7 +9,7 @@ bool _cdecl asm_disk_read(byte drive,
                           word sector,
                           word head,
                           byte count,
-                          byte far* rp_data);
+                          void far* rp_data);
 
 bool _cdecl asm_disk_get_parameters(byte drive,
                                     byte* rp_dtype,

@@ -32,7 +32,21 @@ typedef struct
     long int Size;
 } FAT_File;
 
-bool FAT_Initialise(Disk* disk);
-FAT_File far* FAT_Open(Disk* disk, const char* path);
-long int FAT_Read(Disk* disk, FAT_File far* file, long int byteCount, void* rp_data);
-bool FAT_ReadEntry(Disk* disk, FAT_File far* file, FAT_DirectoryEntry* dirEntry);
+enum FAT_Attributes
+{
+    
+}
+
+bool FAT_ReadBootSector(Disk* disk);
+
+FAT_File* FAT_Open(Disk* disk, const char* path);
+
+bool FAT_ReadFat(Disk* disk);
+
+bool FAT_ReadRootDirectory(Disk* disk);
+
+//long int FAT_Read(Disk* disk, FAT_File far* file, long int byteCount, void* rp_data);
+
+//bool FAT_ReadEntry(Disk* disk, FAT_File far* file, FAT_DirectoryEntry* dirEntry);
+
+bool FAT_Initialize(Disk* disk);

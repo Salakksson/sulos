@@ -26,3 +26,12 @@ int intlen (int value, int base)
 
     return length;
 }
+
+int align(int number, int alignTo)
+{
+    if (alignTo == 0)
+        return number;
+
+    int rem = number % alignTo;
+    return (rem > 0) ? (number + alignTo - rem) : number;
+}

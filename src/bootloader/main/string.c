@@ -26,3 +26,10 @@ char* strcat(char* dst, char* src)
     
     return save;
 }
+
+int strlen(char* str)
+{
+    int len = 0;
+    for (; *str++; len++);
+    return len;
+}

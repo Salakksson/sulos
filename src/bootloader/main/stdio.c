@@ -1,15 +1,5 @@
 #include "stdio.h"
 
-int strlen(char* str)
-{
-    char* cstr = str;
-    while (*cstr)
-    {
-        cstr++;
-    }
-    return cstr-str;
-}
-
 //sometimes shit can fuck up if length is longer than an integer, need to implement size_t or whatever
 char* str_reverse(char* str)
 {
@@ -25,12 +15,12 @@ char* str_reverse(char* str)
     return str;
 }
 
-void printc_tt(char c)
+void printc(char c)
 {
     asm_tt_printc(c, 0);
 }
 
-void _cdecl prints_tt(char* str)
+void _cdecl prints(char* str)
 {
     while(*str)
     {
@@ -42,15 +32,15 @@ void _cdecl prints_tt(char* str)
 
 }
 
-void printd_tt(byte c)
+void printd(byte c)
 {
     switch (c < 10)
     {
         case true:
-            printc_tt(c + 0x30);
+            printc(c + 0x30);
             break;
         case false:
-            printc_tt(c + 0x37);
+            printc(c + 0x37);
     }
 }
 
@@ -85,7 +75,7 @@ char* itoa(int value, char* str, int base)
 
 // My implementation of printf
 // max 255 args
-void _cdecl printf_tt(char* str, ...)
+void _cdecl printf(char* str, ...)
 {
     // if (!str[0])
     // {
@@ -125,12 +115,12 @@ void _cdecl printf_tt(char* str, ...)
                         state = 3; // print argument
                         break;
                     }
-                    printc_tt('%');
+                    printc('%');
                     str+= 2;
                 }
-                printc_tt(*str);
+                printc(*str);
                 if (*str == '\n')
-                    printc_tt('\r');
+                    printc('\r');
                 str++;
                 break;
             case 2:
@@ -154,9 +144,9 @@ void _cdecl printf_tt(char* str, ...)
                         argstr = *argv;
                         while (*argstr)
                         {
-                            printc_tt(*argstr);
+                            printc(*argstr);
                             if (*argstr == '\n')
-                                printc_tt('\r');
+                                printc('\r');
                             argstr++;
 
                         }
@@ -165,9 +155,9 @@ void _cdecl printf_tt(char* str, ...)
                         str++;
                         break;
                     case 'c':
-                        printc_tt(*argv);
+                        printc(*argv);
                         if (*argv == '\n')
-                            printc_tt('r');
+                            printc('r');
                         argv += sizeof(char)/sizeof(int);
                         state = 1;
                         str++;
@@ -182,13 +172,13 @@ void _cdecl printf_tt(char* str, ...)
 
                         while (padding && (pads > 0))
                         {
-                            printc_tt('0');         // print zeros for padding
+                            printc('0');         // print zeros for padding
                             pads--;
                         }
                         buffer = int_str;
                         while (*buffer)
                         {
-                            printc_tt(*buffer);
+                            printc(*buffer);
                             buffer++;
                         }
                         argv += sizeof(char*)/sizeof(int);
@@ -205,13 +195,13 @@ void _cdecl printf_tt(char* str, ...)
 
                         while (padding && (pads > 0))
                         {
-                            printc_tt('0');         // print zeros for padding
+                            printc('0');         // print zeros for padding
                             pads--;
                         }
                         buffer = int_str;
                         while (*buffer)
                         {
-                            printc_tt(*buffer);
+                            printc(*buffer);
                             buffer++;
                         }
                         argv += sizeof(char*)/sizeof(int);

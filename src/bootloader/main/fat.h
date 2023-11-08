@@ -2,6 +2,9 @@
 
 #include "defs.h"
 #include "disk.h"
+#include "stdio.h"
+#include "error.h"
+#include "memory.h"
 
 #pragma pack(push, 1)
 
@@ -34,19 +37,33 @@ typedef struct
 
 enum FAT_Attributes
 {
-    
+    FAT_ATTRIBUTE_READ_ONLY             = 0x01,
+    FAT_ATTRIBUTE_HIDDEN                = 0x02,
+    FAT_ATTRIBUTE_SYSTEM                = 0x04,
+    FAT_ATTRIBUTE_VOLUME_ID             = 0X08,
+    FAT_ATTRIBUTE_DIRECTORY             = 0x10,
+    FAT_ATTRIBUTE_ARCHIVE               = 0x20,
+    FAT_ATTRIBUTE_LFN                   = FAT_ATTRIBUTE_READ_ONLY       |
+                                          FAT_ATTRIBUTE_HIDDEN          |
+                                          FAT_ATTRIBUTE_SYSTEM          |
+                                          FAT_ATTRIBUTE_VOLUME_ID       |
+                                          FAT_ATTRIBUTE_DIRECTORY       |
+                                          FAT_ATTRIBUTE_ARCHIVE 
+
+
 };
 
 bool FAT_ReadBootSector(Disk* disk);
 
-FAT_File* FAT_Open(Disk* disk, const char* path);
+dword FAT_ClusterToLBA(dword cluster);
+
+FAT_File far* FAT_OpenEntry(Disk* disk, FAT_DirectoryEntry* entry);
+
+FAT_File* FAT_Open(Disk* disk, char* path);
 
 bool FAT_ReadFat(Disk* disk);
 
 bool FAT_ReadRootDirectory(Disk* disk);
 
-//long int FAT_Read(Disk* disk, FAT_File far* file, long int byteCount, void* rp_data);
-
-//bool FAT_ReadEntry(Disk* disk, FAT_File far* file, FAT_DirectoryEntry* dirEntry);
 
 bool FAT_Initialize(Disk* disk);

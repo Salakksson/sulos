@@ -35,7 +35,7 @@ typedef struct
 enum FAT_Attributes
 {
     
-}
+};
 
 bool FAT_ReadBootSector(Disk* disk);
 

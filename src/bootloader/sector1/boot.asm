@@ -16,12 +16,9 @@ bits 16						;
 %define INT_VIDEO	 0x10	;All video services
 %define INT_DISK	 0x13	;Low level disk services
 %define INT_KEYBOARD 0X16	;Keyboard input interrupt
-%define INT_RTC		 0x1A	;Real time clock
 
 
-
-
-
+							; FAT12 file system signatures
 jmp short start
 nop
 bdb_oem: db 'MSWIN4.1'
@@ -48,17 +45,13 @@ ebr_sid: db 'FAT12   '
 
 ;ENTRY POINT
 start:
-jmp main
 
-;Main function
-main:
 	mov ax, 0
 	mov ds, ax
 	mov es, ax
 
 	mov ss, ax
 	mov sp, 0x7c00
-
 
 	push es
 	push word .after
@@ -161,12 +154,6 @@ main:
 .load_main:
 
 
-
-; 	push si
-; 	mov si, str_bootmsg
-; 	call prints
-; 	pop si
-
 	mov ax, [main_cluster]
 
 	add ax, 31
@@ -240,7 +227,7 @@ prints:
 	jz .done
 
 	mov ah, 0x0e
-	mov bh, 0
+	xor bh, bh
 	int INT_VIDEO
 
 	jmp .loop
@@ -378,7 +365,6 @@ section.data:
 str_read_error: 		db 'ERROR: B1', ENDL, 0
 str_main_error:			db 'ERROR: B2 ', ENDL, 0
 str_main_filename:		db 'MAIN    BIN'
-str_bootmsg:			db 'booting...', ENDL, 0
 main_cluster:			dw 0
 char_endl:				db ENDL, 0
 

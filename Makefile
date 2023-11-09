@@ -16,19 +16,19 @@ floppy_image: $(BUILD_DIR)/main_floppy.img
 $(BUILD_DIR)/main_floppy.img: bootloader kernel
 	@dd if=/dev/zero of=$(BUILD_DIR)/main_floppy.img bs=512 count=2880
 	@mkfs.fat -F 12 -n "NBOS" $(BUILD_DIR)/main_floppy.img
-	@dd if=$(BUILD_DIR)/sector1.bin of=$(BUILD_DIR)/main_floppy.img conv=notrunc
+	@dd if=$(BUILD_DIR)/boot.bin of=$(BUILD_DIR)/main_floppy.img conv=notrunc
 	@mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/main.bin "::main.bin"
 	@mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/kernel.bin "::kernel.bin"
 
 #
 # Bootloader
 #
-bootloader: sector1 main
+bootloader: boot main
 
-sector1: $(BUILD_DIR)/sector1.bin
+boot: $(BUILD_DIR)/boot.bin
 
-$(BUILD_DIR)/sector1.bin: always
-	@$(MAKE) -C $(SRC_DIR)/bootloader/sector1 BUILD_DIR="$(abspath $(BUILD_DIR))"
+$(BUILD_DIR)/boot.bin: always
+	@$(MAKE) -C $(SRC_DIR)/bootloader/boot BUILD_DIR="$(abspath $(BUILD_DIR))"
 
 main: $(BUILD_DIR)/main.bin
 
@@ -53,7 +53,7 @@ always:
 # Clean
 #
 clean:
-	#$(MAKE) -C $(SRC_DIR)/bootloader/sector1 BUILD_DIR="$(abspath $(BUILD_DIR))" clean
+	#$(MAKE) -C $(SRC_DIR)/bootloader/boot BUILD_DIR="$(abspath $(BUILD_DIR))" clean
 	#$(MAKE) -C $(SRC_DIR)/bootloader/main BUILD_DIR="$(abspath $(BUILD_DIR))" clean
 	#$(MAKE) -C $(SRC_DIR)/kernel BUILD_DIR="$(abspath $(BUIL:D_DIR))" clean
 	@rm -rf $(BUILD_DIR)/*

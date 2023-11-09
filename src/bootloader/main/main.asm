@@ -22,7 +22,7 @@ extern _asm_key_reboot		; Reboots BIOS
 
 extern _boot_main			; void boot_main(word bootDrive)
 
-extern _prints_tt			; void prints_tt(char* str)
+extern _prints				; void prints_tt(char* str)
 
 
 
@@ -46,7 +46,7 @@ entry:
 	call _boot_main			; Call main function
 
 	push str_error_escape	; if: main function returns:
-	call _prints_tt			; print error to screen
+	call _prints			; print error to screen
 
 	;call _asm_key_reboot
 

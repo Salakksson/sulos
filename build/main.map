@@ -1,0 +1,153 @@
+Open Watcom Linker Version 2.0 beta Oct 20 2023 01:52:49 (64-bit)
+Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       23/11/09 21:03:56
+Executable Image: /workspaces/pushos/build/main.bin
+creating a RAW Binary Image executable
+Error! E2028: FAT_ReadRootDirectory_ is an undefined reference
+Error! E2028: DISK_ReadSectors_ is an undefined reference
+Error! E2028: __U4M is an undefined reference
+Error! E2028: FAT_Close_ is an undefined reference
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          000010c4             0000020c
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+_ENTRY                 CODE           AUTO           00000000        0000005d
+_TEXT                  CODE           AUTO           0000005d        00001067
+CONST                  DATA           DGROUP         000010c4        000001ff
+CONST2                 DATA           DGROUP         000012c4        00000000
+_DATA                  DATA           DGROUP         000012c4        00000004
+_BSS                   BSS            DGROUP         000012c8        00000008
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: /workspaces/pushos/build/main/asm/cpu.obj(cpu.asm)
+0000005d       __U4D
+00000084       _asm_tt_printc
+00000097       _asm_key_reboot
+000000a2       _asm_disk_reset
+000000b8       _asm_disk_read
+000000f0       _asm_disk_get_parameters
+Module: /workspaces/pushos/build/main/asm/main.obj(main.asm)
+00000000       entry
+Module: /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)
+00000136+      FAT_ReadBootSector_
+0000016a+      FAT_ReadFat_
+000001ae+      FAT_Initialize_
+0000042a+      FAT_ClusterToLBA_
+00000480+      FAT_OpenEntry_
+0000061c+      FAT_FindFile_
+00000637+      FAT_Open_
+Module: /workspaces/pushos/build/main/c/string.obj(/workspaces/pushos/src/bootloader/main/string.c)
+0000079c       strchr_
+000007f1+      strcpy_
+00000839+      strcat_
+0000088e       strlen_
+Module: /workspaces/pushos/build/main/c/stdio.obj(/workspaces/pushos/src/bootloader/main/stdio.c)
+000008ca+      str_reverse_
+00000946+      printc_
+0000096d       _prints
+000009bc+      printd_
+00000a15+      itoa_
+00000af0       _printf
+Module: /workspaces/pushos/build/main/c/math.obj(/workspaces/pushos/src/bootloader/main/math.c)
+00000d9c+      max_
+00000df6+      intlen_
+00000e43+      align_
+Module: /workspaces/pushos/build/main/c/memory.obj(/workspaces/pushos/src/bootloader/main/memory.c)
+00000ea0       memcpy_
+Module: /workspaces/pushos/build/main/c/main.obj(/workspaces/pushos/src/bootloader/main/main.c)
+00000ef3       _boot_main
+Module: /workspaces/pushos/build/main/c/disk.obj(/workspaces/pushos/src/bootloader/main/disk.c)
+00000f02+      Disk_Init_
+00000f76+      Disk_LBA_To_CHS_
+00001029       Disk_ReadSectors_
+
+
+                        +---------------------+
+                        |   Module Segments   |
+                        +---------------------+
+
+! = 32-bit segment
+c = initialized communal data
+
+Module          Segment               Class           Address         Size
+======          =======               =====           =======         ====
+
+cpu.asm         _TEXT                 CODE           0000005d         000000d9
+main.asm        _ENTRY                CODE           00000000         0000005d
+/workspaces/pushos/src/bootloader/main/fat.c
+                _TEXT                 CODE           00000136         00000666
+                CONST                 DATA           000010c4         000001ff
+                CONST2                DATA           000012c4         00000000
+                _DATA                 DATA           000012c4         00000004
+                _BSS                  BSS            000012c8         00000008
+/workspaces/pushos/src/bootloader/main/string.c
+                _TEXT                 CODE           0000079c         0000012e
+                CONST                 DATA           000012c4         00000000
+                CONST2                DATA           000012c4         00000000
+                _DATA                 DATA           000012c8         00000000
+/workspaces/pushos/src/bootloader/main/stdio.c
+                _TEXT                 CODE           000008ca         000004d2
+                CONST                 DATA           000012c4         00000000
+                CONST2                DATA           000012c4         00000000
+                _DATA                 DATA           000012c8         00000000
+/workspaces/pushos/src/bootloader/main/math.c
+                _TEXT                 CODE           00000d9c         00000104
+                CONST                 DATA           000012c4         00000000
+                CONST2                DATA           000012c4         00000000
+                _DATA                 DATA           000012c8         00000000
+/workspaces/pushos/src/bootloader/main/memory.c
+                _TEXT                 CODE           00000ea0         00000053
+                CONST                 DATA           000012c4         00000000
+                CONST2                DATA           000012c4         00000000
+                _DATA                 DATA           000012c8         00000000
+/workspaces/pushos/src/bootloader/main/main.c
+                _TEXT                 CODE           00000ef3         0000000f
+                CONST                 DATA           000012c4         00000000
+                CONST2                DATA           000012c4         00000000
+                _DATA                 DATA           000012c8         00000000
+/workspaces/pushos/src/bootloader/main/disk.c
+                _TEXT                 CODE           00000f02         000001c2
+                CONST                 DATA           000012c4         00000000
+                CONST2                DATA           000012c4         00000000
+                _DATA                 DATA           000012c8         00000000
+Warning! W1014: stack segment not found
+
+
+                        +---------------------------+
+                        |   Unresolved References   |
+                        +---------------------------+
+
+Undefined Symbol                Referenced by
+================                =============
+
+FAT_ReadRootDirectory_          /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)
+DISK_ReadSectors_               /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)
+__U4M                           /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)
+FAT_Close_                      /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)

@@ -78,10 +78,10 @@ bool FAT_ReadFat(Disk* disk)
 
 bool FAT_Initialize(Disk* disk)
 {
-    printf("FAT - Initialising file system\n")
+    printf("FAT - Initialising file system\n");
     if (!FAT_ReadBootSector(disk))
     {
-        printf("ERROR 0x0000F0001: FAT - Failed to read boot sector\n")
+        printf("ERROR 0x0000F0001: FAT - Failed to read boot sector\n");
         return false;
     }
 
@@ -89,13 +89,13 @@ bool FAT_Initialize(Disk* disk)
     dword fatSize = g_Data->BS.BootSector.BytesPerSector * g_Data->BS.BootSector.SectorsPerFat;
     if (sizeof(FAT_Data) + fatSize >= MEMORY_FAT_SIZE)
     {
-        printf("ERROR 0x0000F0002: FAT - Not enough memory to read file allocation table\n")
+        printf("ERROR 0x0000F0002: FAT - Not enough memory to read file allocation table\n");
         return false;
     }
 
     if (!FAT_ReadFat(disk))
     {
-        printf("ERROR 0x0000F0003: FAT - Failed to read file allocation table\n")
+        printf("ERROR 0x0000F0003: FAT - Failed to read file allocation table\n");
         return false;
     }
 
@@ -106,13 +106,13 @@ bool FAT_Initialize(Disk* disk)
 
     if (sizeof(FAT_Data) + fatSize + rootDirSize >= MEMORY_FAT_SIZE)
     {
-        printf("ERROR 0x0000F0004: FAT - Not enough memory to read root directory\n")
+        printf("ERROR 0x0000F0004: FAT - Not enough memory to read root directory\n");
         return false;
     }
 
     if(!FAT_ReadRootDirectory(disk))
     {
-        printf("ERROR 0x0000F0005: FAT - Failed to read root directory\n")
+        printf("ERROR 0x0000F0005: FAT - Failed to read root directory\n");
         return false;   
     }
 
@@ -129,7 +129,7 @@ bool FAT_Initialize(Disk* disk)
 
     if (!DISK_ReadSectors(disk, rootDirLBA, 1, g_Data->RootDirectory.Buffer))
     {
-        printf("ERROR 0x0000F0005: FAT - Failed to read root directory\n")
+        printf("ERROR 0x0000F0005: FAT - Failed to read root directory\n");
         return false;   
     }
     dword rootDirSectors = (rootDirSize + g_Data->BS.BootSector.BytesPerSector - 1) / g_Data->BS.BootSector.BytesPerSector;
@@ -154,8 +154,7 @@ FAT_File far* FAT_OpenEntry(Disk* disk, FAT_DirectoryEntry* entry)
     
     if (handle < 0)
     {
-        ERROR_CODE = FAT_NoHandles_Code;
-        ERROR_MESG = FAT_NoHandles_Mesg;
+        printf("ERROR 0x0000F0006: FAT - There are no more file handles\n");
         return nullptr;   
     }
 
@@ -169,8 +168,7 @@ FAT_File far* FAT_OpenEntry(Disk* disk, FAT_DirectoryEntry* entry)
 
     if(!DISK_ReadSectors(disk, FAT_ClusterToLBA(fd->CurrentCluster), 1, fd->Buffer))
     {
-        ERROR_CODE = FAT_ReadFailed_Code;
-        ERROR_MESG = FAT_ReadFailed_Mesg;
+        printf("ERROR 0x0000F0003: FAT - Failed to read entry\n");
         return nullptr;     
     }
     fd->Opened = true;
@@ -219,9 +217,18 @@ FAT_File* FAT_Open(Disk* disk, char* path)
                 printf("FAT: Cannot find directory %s", name);
                 return nullptr;
             }
-            FAT_Close(parent);
-            parent = current;
-            current = 
+            FAT_Close(current);
+            current = FAT_OpenEntry(disk, &entry);
+
+        }
+        else
+        {
+            FAT_Close(current);
+
+            printf("ERROR: FAT - unable to find %s\n", name);
+            return nullptr;
         }
     }
+
+    return current;
 }

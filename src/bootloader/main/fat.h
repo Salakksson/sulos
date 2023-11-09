@@ -3,7 +3,6 @@
 #include "defs.h"
 #include "disk.h"
 #include "stdio.h"
-#include "error.h"
 #include "memory.h"
 
 #pragma pack(push, 1)
@@ -55,15 +54,16 @@ enum FAT_Attributes
 
 bool FAT_ReadBootSector(Disk* disk);
 
+bool FAT_ReadFat(Disk* disk);
+
+bool FAT_Initialize(Disk* disk);
+
 dword FAT_ClusterToLBA(dword cluster);
 
 FAT_File far* FAT_OpenEntry(Disk* disk, FAT_DirectoryEntry* entry);
 
+bool FAT_FindFile(FAT_File far* file, char* name, FAT_DirectoryEntry* rp_entry);
+
 FAT_File* FAT_Open(Disk* disk, char* path);
 
-bool FAT_ReadFat(Disk* disk);
 
-bool FAT_ReadRootDirectory(Disk* disk);
-
-
-bool FAT_Initialize(Disk* disk);

@@ -4,7 +4,8 @@
 #include "disk.h"
 #include "stdio.h"
 #include "memory.h"
-
+#include "string.h"
+#include "math.h"
 #pragma pack(push, 1)
 
 typedef struct
@@ -52,18 +53,29 @@ enum FAT_Attributes
 
 };
 
-bool FAT_ReadBootSector(Disk* disk);
+static bool FAT_ReadBootSector(Disk* disk);
 
-bool FAT_ReadFat(Disk* disk);
+static bool FAT_ReadFat(Disk* disk);
 
-bool FAT_Initialize(Disk* disk);
+static dword FAT_ClusterToLBA(dword cluster);
 
-dword FAT_ClusterToLBA(dword cluster);
+
+
+bool FAT_Init(Disk* disk);
+
 
 FAT_File far* FAT_OpenEntry(Disk* disk, FAT_DirectoryEntry* entry);
 
-bool FAT_FindFile(FAT_File far* file, char* name, FAT_DirectoryEntry* rp_entry);
+dword FAT_NextCluster(dword currentCluster);
 
-FAT_File* FAT_Open(Disk* disk, char* path);
+dword FAT_Read(Disk* disk, FAT_File far* file, dword byteCount, void* rp_data);
+
+bool FAT_ReadEntry(Disk* disk, FAT_File far* file, FAT_DirectoryEntry* dirEntry);
+
+void FAT_Close(FAT_File far* file);
+
+bool FAT_FindFile(Disk* disk, FAT_File far* file, char* name, FAT_DirectoryEntry* rp_entry);
+
+FAT_File far* FAT_Open(Disk* disk, char* path);
 
 

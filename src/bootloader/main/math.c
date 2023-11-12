@@ -13,6 +13,17 @@ int max (int n, int m)
     }
 }
 
+int min (int n, int m)
+{
+    switch(n > m)
+    {
+        case true:
+            return m;
+        case false:
+            return n;
+    }
+}
+
 // returns length of integer not including sign
 int intlen (int value, int base)
 {
@@ -34,4 +45,13 @@ int align(int number, int alignTo)
 
     int rem = number % alignTo;
     return (rem > 0) ? (number + alignTo - rem) : number;
+}
+
+dword mod(register dword num, register dword mod)
+{
+    if (!mod)
+        return false;
+
+    register dword cnum = num / mod;
+    return num - cnum * mod;
 }

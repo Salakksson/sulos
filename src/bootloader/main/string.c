@@ -33,3 +33,13 @@ int strlen(char* str)
     for (; *str++; len++);
     return len;
 }
+
+char upper(char chr)
+{
+    return (chr >= 'a' && chr <= 'z') ? chr + ('A' - 'a') : chr;
+}
+
+char lower(char chr)
+{
+    return (chr >= 'A' && chr <= 'Z') ? chr - ('A' - 'a') : chr;
+}

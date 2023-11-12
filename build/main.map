@@ -1,13 +1,9 @@
 Open Watcom Linker Version 2.0 beta Oct 20 2023 01:52:49 (64-bit)
 Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       23/11/09 21:03:56
+Created on:       23/11/12 23:06:58
 Executable Image: /workspaces/pushos/build/main.bin
 creating a RAW Binary Image executable
-Error! E2028: FAT_ReadRootDirectory_ is an undefined reference
-Error! E2028: DISK_ReadSectors_ is an undefined reference
-Error! E2028: __U4M is an undefined reference
-Error! E2028: FAT_Close_ is an undefined reference
 
 
                         +------------+
@@ -17,7 +13,7 @@ Error! E2028: FAT_Close_ is an undefined reference
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          000010c4             0000020c
+DGROUP                          000018f0             00000236
 
 
 
@@ -29,11 +25,11 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00000000        0000005d
-_TEXT                  CODE           AUTO           0000005d        00001067
-CONST                  DATA           DGROUP         000010c4        000001ff
-CONST2                 DATA           DGROUP         000012c4        00000000
-_DATA                  DATA           DGROUP         000012c4        00000004
-_BSS                   BSS            DGROUP         000012c8        00000008
+_TEXT                  CODE           AUTO           0000005d        00001892
+CONST                  DATA           DGROUP         000018f0        00000229
+CONST2                 DATA           DGROUP         00001b1a        00000000
+_DATA                  DATA           DGROUP         00001b1a        00000004
+_BSS                   BSS            DGROUP         00001b1e        00000008
 
 
                         +----------------+
@@ -48,45 +44,53 @@ Address        Symbol
 
 Module: /workspaces/pushos/build/main/asm/cpu.obj(cpu.asm)
 0000005d       __U4D
-00000084       _asm_tt_printc
-00000097       _asm_key_reboot
-000000a2       _asm_disk_reset
-000000b8       _asm_disk_read
-000000f0       _asm_disk_get_parameters
+00000084       __U4M
+0000009e       _asm_tt_printc
+000000b1       _asm_key_reboot
+000000bc       _asm_disk_reset
+000000d2       _asm_disk_read
+0000010a       _asm_disk_get_parameters
 Module: /workspaces/pushos/build/main/asm/main.obj(main.asm)
 00000000       entry
 Module: /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)
-00000136+      FAT_ReadBootSector_
-0000016a+      FAT_ReadFat_
-000001ae+      FAT_Initialize_
-0000042a+      FAT_ClusterToLBA_
-00000480+      FAT_OpenEntry_
-0000061c+      FAT_FindFile_
-00000637+      FAT_Open_
+0000021e       FAT_Init_
+00000448+      FAT_OpenEntry_
+000005e4+      FAT_NextCluster_
+00000675+      FAT_Read_
+0000093b       FAT_ReadEntry_
+00000994       FAT_Close_
+00000a1b+      FAT_FindFile_
+00000b3c       FAT_Open_
 Module: /workspaces/pushos/build/main/c/string.obj(/workspaces/pushos/src/bootloader/main/string.c)
-0000079c       strchr_
-000007f1+      strcpy_
-00000839+      strcat_
-0000088e       strlen_
+00000cb3       strchr_
+00000d08+      strcpy_
+00000d50+      strcat_
+00000da5       strlen_
+00000de1       upper_
+00000e2c+      lower_
 Module: /workspaces/pushos/build/main/c/stdio.obj(/workspaces/pushos/src/bootloader/main/stdio.c)
-000008ca+      str_reverse_
-00000946+      printc_
-0000096d       _prints
-000009bc+      printd_
-00000a15+      itoa_
-00000af0       _printf
+00000e77+      str_reverse_
+00000ef3       printc_
+00000f1a       _prints
+00000f69+      printd_
+00000fc2+      itoa_
+0000109d       _printf
 Module: /workspaces/pushos/build/main/c/math.obj(/workspaces/pushos/src/bootloader/main/math.c)
-00000d9c+      max_
-00000df6+      intlen_
-00000e43+      align_
+00001349+      max_
+000013a3       min_
+000013fd+      intlen_
+0000144a+      align_
+000014a7       mod_
 Module: /workspaces/pushos/build/main/c/memory.obj(/workspaces/pushos/src/bootloader/main/memory.c)
-00000ea0       memcpy_
+0000151d       memcpy_
+00001570       memset_
+000015cf       memcmp_
 Module: /workspaces/pushos/build/main/c/main.obj(/workspaces/pushos/src/bootloader/main/main.c)
-00000ef3       _boot_main
+0000164c       _boot_main
 Module: /workspaces/pushos/build/main/c/disk.obj(/workspaces/pushos/src/bootloader/main/disk.c)
-00000f02+      Disk_Init_
-00000f76+      Disk_LBA_To_CHS_
-00001029       Disk_ReadSectors_
+0000172d       Disk_Init_
+000017a1+      Disk_LBA_To_CHS_
+00001854       Disk_ReadSectors_
 
 
                         +---------------------+
@@ -99,55 +103,52 @@ c = initialized communal data
 Module          Segment               Class           Address         Size
 ======          =======               =====           =======         ====
 
-cpu.asm         _TEXT                 CODE           0000005d         000000d9
+cpu.asm         _TEXT                 CODE           0000005d         000000f3
 main.asm        _ENTRY                CODE           00000000         0000005d
 /workspaces/pushos/src/bootloader/main/fat.c
-                _TEXT                 CODE           00000136         00000666
-                CONST                 DATA           000010c4         000001ff
-                CONST2                DATA           000012c4         00000000
-                _DATA                 DATA           000012c4         00000004
-                _BSS                  BSS            000012c8         00000008
+                _TEXT                 CODE           00000150         00000b63
+                CONST                 DATA           000018f0         000001e3
+                CONST2                DATA           00001b1a         00000000
+                _DATA                 DATA           00001b1a         00000004
+                _BSS                  BSS            00001b1e         00000008
 /workspaces/pushos/src/bootloader/main/string.c
-                _TEXT                 CODE           0000079c         0000012e
-                CONST                 DATA           000012c4         00000000
-                CONST2                DATA           000012c4         00000000
-                _DATA                 DATA           000012c8         00000000
+                _TEXT                 CODE           00000cb3         000001c4
+                CONST                 DATA           00001ad4         00000000
+                CONST2                DATA           00001b1a         00000000
+                _DATA                 DATA           00001b1e         00000000
 /workspaces/pushos/src/bootloader/main/stdio.c
-                _TEXT                 CODE           000008ca         000004d2
-                CONST                 DATA           000012c4         00000000
-                CONST2                DATA           000012c4         00000000
-                _DATA                 DATA           000012c8         00000000
+                _TEXT                 CODE           00000e77         000004d2
+                CONST                 DATA           00001ad4         00000000
+                CONST2                DATA           00001b1a         00000000
+                _DATA                 DATA           00001b1e         00000000
 /workspaces/pushos/src/bootloader/main/math.c
-                _TEXT                 CODE           00000d9c         00000104
-                CONST                 DATA           000012c4         00000000
-                CONST2                DATA           000012c4         00000000
-                _DATA                 DATA           000012c8         00000000
+                _TEXT                 CODE           00001349         000001d4
+                CONST                 DATA           00001ad4         00000000
+                CONST2                DATA           00001b1a         00000000
+                _DATA                 DATA           00001b1e         00000000
 /workspaces/pushos/src/bootloader/main/memory.c
-                _TEXT                 CODE           00000ea0         00000053
-                CONST                 DATA           000012c4         00000000
-                CONST2                DATA           000012c4         00000000
-                _DATA                 DATA           000012c8         00000000
+                _TEXT                 CODE           0000151d         0000012f
+                CONST                 DATA           00001ad4         00000000
+                CONST2                DATA           00001b1a         00000000
+                _DATA                 DATA           00001b1e         00000000
 /workspaces/pushos/src/bootloader/main/main.c
-                _TEXT                 CODE           00000ef3         0000000f
-                CONST                 DATA           000012c4         00000000
-                CONST2                DATA           000012c4         00000000
-                _DATA                 DATA           000012c8         00000000
+                _TEXT                 CODE           0000164c         000000e1
+                CONST                 DATA           00001ad4         00000045
+                CONST2                DATA           00001b1a         00000000
+                _DATA                 DATA           00001b1e         00000000
 /workspaces/pushos/src/bootloader/main/disk.c
-                _TEXT                 CODE           00000f02         000001c2
-                CONST                 DATA           000012c4         00000000
-                CONST2                DATA           000012c4         00000000
-                _DATA                 DATA           000012c8         00000000
+                _TEXT                 CODE           0000172d         000001c2
+                CONST                 DATA           00001b1a         00000000
+                CONST2                DATA           00001b1a         00000000
+                _DATA                 DATA           00001b1e         00000000
 Warning! W1014: stack segment not found
 
 
-                        +---------------------------+
-                        |   Unresolved References   |
-                        +---------------------------+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
 
-Undefined Symbol                Referenced by
-================                =============
-
-FAT_ReadRootDirectory_          /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)
-DISK_ReadSectors_               /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)
-__U4M                           /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)
-FAT_Close_                      /workspaces/pushos/build/main/c/fat.obj(/workspaces/pushos/src/bootloader/main/fat.c)
+Stack size:  0200 (512.)
+Memory size:  1b26 (6950.)
+Entry point address: 00000000
+Link time: 00:00.03

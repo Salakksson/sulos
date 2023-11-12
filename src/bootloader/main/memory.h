@@ -9,3 +9,7 @@
 #define MEMORY_FAT_SIZE         0x00010000
 
 void memcpy(void far* dst, void far* src, int num);
+
+void far* memset(void far* addr, int value, word num);
+
+int memcmp(void far* ptr1, void far* ptr2, word num);

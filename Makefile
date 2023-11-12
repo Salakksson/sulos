@@ -19,6 +19,7 @@ $(BUILD_DIR)/main_floppy.img: bootloader kernel
 	@dd if=$(BUILD_DIR)/boot.bin of=$(BUILD_DIR)/main_floppy.img conv=notrunc
 	@mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/main.bin "::main.bin"
 	@mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/kernel.bin "::kernel.bin"
+	@mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/test.txt "::test.txt"
 
 #
 # Bootloader

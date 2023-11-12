@@ -34,6 +34,21 @@ __U4D:
 	shr edx, 16
 
 	ret
+
+global __U4M
+__U4M:
+    shl edx, 16         ; dx to upper half of edx
+    mov dx, ax          ; m1 in edx
+    mov eax, edx        ; m1 in eax
+
+    shl ecx, 16         ; cx to upper half of ecx
+    mov cx, bx          ; m2 in ecx
+
+    mul ecx             ; result in edx:eax (we only need eax)
+    mov edx, eax        ; move upper half to dx
+    shr edx, 16
+
+    ret
 ;
 ; Prints string in Teletype output
 ; Arguments:

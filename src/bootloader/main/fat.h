@@ -1,12 +1,60 @@
-#pragma once
+#define SECTOR_SIZE              512
+#define MAX_FILE_HANDLES         10
+#define ROOT_DIRECTORY_HANDLE    -1
+#define MAX_PATH_SIZE            256
 
-#include "defs.h"
 #include "disk.h"
+#include "defs.h"
 #include "stdio.h"
 #include "memory.h"
-#include "string.h"
-#include "math.h"
+
+enum FAT_Attributes
+{
+    FAT_ATTRIBUTE_READ_ONLY             = 0x01,
+    FAT_ATTRIBUTE_HIDDEN                = 0x02,
+    FAT_ATTRIBUTE_SYSTEM                = 0x04,
+    FAT_ATTRIBUTE_VOLUME_ID             = 0X08,
+    FAT_ATTRIBUTE_DIRECTORY             = 0x10,
+    FAT_ATTRIBUTE_ARCHIVE               = 0x20,
+    FAT_ATTRIBUTE_LFN                   = FAT_ATTRIBUTE_READ_ONLY       |
+                                          FAT_ATTRIBUTE_HIDDEN          |
+                                          FAT_ATTRIBUTE_SYSTEM          |
+                                          FAT_ATTRIBUTE_VOLUME_ID       |
+                                          FAT_ATTRIBUTE_DIRECTORY       |
+                                          FAT_ATTRIBUTE_ARCHIVE 
+
+
+};
+
 #pragma pack(push, 1)
+
+typedef struct
+{
+    byte BootInstructions[3];
+    byte OEM_Identifier[8];
+    word BytesPerSector;
+    byte SectorsPerCluster;
+    word ReservedSectors;
+    byte FAT_Count;
+    word DirEntryCount;
+    word TotalSectors;
+    byte MediaDescriptorType;
+    word SectorsPerFat;
+    word SectorsPerTrack;
+    word Heads;
+    dword HiddenSectors;
+    dword LargeSectorCount;
+
+    // EBR
+
+    byte DriveNumber;
+    byte RESERVED;
+    byte Signature;
+    dword VolumeID;
+    byte VolumeLabel;
+    byte SystemID;
+    
+} FAT_BootSector;
 
 typedef struct
 {
@@ -35,47 +83,29 @@ typedef struct
     long int Size;
 } FAT_File;
 
-enum FAT_Attributes
+typedef struct
 {
-    FAT_ATTRIBUTE_READ_ONLY             = 0x01,
-    FAT_ATTRIBUTE_HIDDEN                = 0x02,
-    FAT_ATTRIBUTE_SYSTEM                = 0x04,
-    FAT_ATTRIBUTE_VOLUME_ID             = 0X08,
-    FAT_ATTRIBUTE_DIRECTORY             = 0x10,
-    FAT_ATTRIBUTE_ARCHIVE               = 0x20,
-    FAT_ATTRIBUTE_LFN                   = FAT_ATTRIBUTE_READ_ONLY       |
-                                          FAT_ATTRIBUTE_HIDDEN          |
-                                          FAT_ATTRIBUTE_SYSTEM          |
-                                          FAT_ATTRIBUTE_VOLUME_ID       |
-                                          FAT_ATTRIBUTE_DIRECTORY       |
-                                          FAT_ATTRIBUTE_ARCHIVE 
+    byte Buffer[SECTOR_SIZE];
+    FAT_File Public;
+    bool Opened;
+    dword FirstCluster;
+    dword CurrentCluster;
+    dword CurrentSectorInCluster;
+
+} FAT_FileData;
+
+typedef struct
+{
+    union
+    {
+        FAT_BootSector BootSector;
+        char BootSectorBytes[SECTOR_SIZE];
+    } BS;
+    FAT_FileData RootDirectory;
+    FAT_FileData OpenedFiles[MAX_FILE_HANDLES];
+} FAT_Data;
 
 
-};
+u16 FAT_Init(Disk* disk);
 
-static bool FAT_ReadBootSector(Disk* disk);
-
-static bool FAT_ReadFat(Disk* disk);
-
-static dword FAT_ClusterToLBA(dword cluster);
-
-
-
-bool FAT_Init(Disk* disk);
-
-
-FAT_File far* FAT_OpenEntry(Disk* disk, FAT_DirectoryEntry* entry);
-
-dword FAT_NextCluster(dword currentCluster);
-
-dword FAT_Read(Disk* disk, FAT_File far* file, dword byteCount, void* rp_data);
-
-bool FAT_ReadEntry(Disk* disk, FAT_File far* file, FAT_DirectoryEntry* dirEntry);
-
-void FAT_Close(FAT_File far* file);
-
-bool FAT_FindFile(Disk* disk, FAT_File far* file, char* name, FAT_DirectoryEntry* rp_entry);
-
-FAT_File far* FAT_Open(Disk* disk, char* path);
-
-
+u16 FAT_Read(Disk* disk, u8 index, void* rp_data);

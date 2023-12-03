@@ -1,6 +1,10 @@
 #pragma once
 
+void _cdecl x86_div64_32(unsigned long long int dividend, dword divisor, unsigned long long int* quotientOut, dword* remainderOut);
+
 void _cdecl asm_key_reboot();
+
+void _cdecl asm_key_pause();
 
 bool _cdecl asm_disk_reset(byte drive);
 

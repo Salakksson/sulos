@@ -17,5 +17,5 @@ void printd(byte c);
 
 char* itoa(int value, char* str, int base);
 
-void _cdecl printf(char* str, ...);
+void _cdecl printf(const char* fmt, ...);
 

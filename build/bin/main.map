@@ -1,0 +1,152 @@
+Open Watcom Linker Version 2.0 beta Oct 20 2023 01:52:49 (64-bit)
+Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       23/12/02 22:38:53
+Executable Image: /home/been/code/sulos/build/bin/main.bin
+creating a RAW Binary Image executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          00001204             000001da
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+_ENTRY                 CODE           AUTO           00000000        0000005d
+_TEXT                  CODE           AUTO           0000005d        000011a7
+CONST                  DATA           DGROUP         00001204        000001a7
+CONST2                 DATA           DGROUP         000013ac        00000011
+_DATA                  DATA           DGROUP         000013be        00000010
+_BSS                   BSS            DGROUP         000013ce        00000010
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: /home/been/code/sulos/build/bin/main/asm/cpu.obj(cpu.asm)
+0000005d       __U4D
+00000084       __U4M
+0000009e       _x86_div64_32
+000000cc       _asm_tt_printc
+000000df*      _asm_key_reboot
+000000ea*      _asm_key_pause
+000000ef       _asm_disk_reset
+00000104       _asm_disk_read
+00000141       _asm_disk_get_parameters
+Module: /home/been/code/sulos/build/bin/main/asm/main.obj(main.asm)
+00000000       entry
+Module: /home/been/code/sulos/build/bin/main/c/disk.obj(/home/been/code/sulos/src/bootloader/main/disk.c)
+000001b0       Disk_Init_
+0000024c+      Disk_LBA_To_CHS_
+000002ff       Disk_ReadSectors_
+Module: /home/been/code/sulos/build/bin/main/c/fat.obj(/home/been/code/sulos/src/bootloader/main/fat.c)
+000003d5       FAT_Init_
+0000052a       FAT_Read_
+Module: /home/been/code/sulos/build/bin/main/c/main.obj(/home/been/code/sulos/src/bootloader/main/main.c)
+0000057e       _boot_main
+Module: /home/been/code/sulos/build/bin/main/c/math.obj(/home/been/code/sulos/src/bootloader/main/math.c)
+00000605+      max_
+00000664+      min_
+000006c3+      intlen_
+00000710+      align_
+0000076d+      mod_
+Module: /home/been/code/sulos/build/bin/main/c/memory.obj(/home/been/code/sulos/src/bootloader/main/memory.c)
+000007e3       memcpy_
+00000848+      memset_
+000008a7+      memcmp_
+Module: /home/been/code/sulos/build/bin/main/c/stdio.obj(/home/been/code/sulos/src/bootloader/main/stdio.c)
+00000924+      str_reverse_
+000009a0+      printc_
+000009c7       _prints
+00000a16+      printd_
+00000a6f+      itoa_
+00000b54+      printf_number_
+00000dc8       _printf
+000013ac+      _g_HexChars
+Module: /home/been/code/sulos/build/bin/main/c/string.obj(/home/been/code/sulos/src/bootloader/main/string.c)
+00001040+      strchr_
+00001095+      strcpy_
+000010dd+      strcat_
+00001132       strlen_
+0000116e+      upper_
+000011b9+      lower_
+
+
+                        +---------------------+
+                        |   Module Segments   |
+                        +---------------------+
+
+! = 32-bit segment
+c = initialized communal data
+
+Module          Segment               Class           Address         Size
+======          =======               =====           =======         ====
+
+cpu.asm         _TEXT                 CODE           0000005d         00000153
+main.asm        _ENTRY                CODE           00000000         0000005d
+/home/been/code/sulos/src/bootloader/main/disk.c
+                _TEXT                 CODE           000001b0         00000225
+                CONST                 DATA           00001204         0000007c
+                CONST2                DATA           000013ac         00000000
+                _DATA                 DATA           000013be         00000000
+/home/been/code/sulos/src/bootloader/main/fat.c
+                _TEXT                 CODE           000003d5         000001a9
+                CONST                 DATA           00001280         000000db
+                CONST2                DATA           000013ac         00000000
+                _DATA                 DATA           000013be         00000004
+                _BSS                  BSS            000013ce         00000010
+/home/been/code/sulos/src/bootloader/main/main.c
+                _TEXT                 CODE           0000057e         00000087
+                CONST                 DATA           0000135c         0000004f
+                CONST2                DATA           000013ac         00000000
+                _DATA                 DATA           000013c2         0000000c
+/home/been/code/sulos/src/bootloader/main/math.c
+                _TEXT                 CODE           00000605         000001de
+                CONST                 DATA           000013ac         00000000
+                CONST2                DATA           000013ac         00000000
+                _DATA                 DATA           000013ce         00000000
+/home/been/code/sulos/src/bootloader/main/memory.c
+                _TEXT                 CODE           000007e3         00000141
+                CONST                 DATA           000013ac         00000000
+                CONST2                DATA           000013ac         00000000
+                _DATA                 DATA           000013ce         00000000
+/home/been/code/sulos/src/bootloader/main/stdio.c
+                _TEXT                 CODE           00000924         0000071c
+                CONST                 DATA           000013ac         00000000
+                CONST2                DATA           000013ac         00000011
+                _DATA                 DATA           000013ce         00000000
+/home/been/code/sulos/src/bootloader/main/string.c
+                _TEXT                 CODE           00001040         000001c4
+                CONST                 DATA           000013ac         00000000
+                CONST2                DATA           000013be         00000000
+                _DATA                 DATA           000013ce         00000000
+Warning! W1014: stack segment not found
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  0200 (512.)
+Memory size:  13de (5086.)
+Entry point address: 00000000
+Link time: 00:00.46

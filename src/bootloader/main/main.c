@@ -1,42 +1,37 @@
 #include "defs.h"
 #include "stdio.h"
 #include "cpu.h"
+#include "disk.h"
 #include "fat.h"
-
 
 
 
 void _cdecl boot_main(word bootDrive)
 {
+    printf("os testing\n\r");
     Disk disk;
     if (!Disk_Init(&disk, bootDrive))
     {
-        printf("Failed to initialise Disk\n");
+        printf("Failed to initialise Disk\n\r");
         goto halt;
     }
-
+    
     if(!FAT_Init(&disk))
     {
-        printf("Failed to initialise FAT\n");
+        printf("Failed to initialise FAT\n\r");
         goto halt;
     }
 
-    FAT_File far* fd = FAT_Open(&disk, "/");
-    FAT_DirectoryEntry entry;
+    byte data[512];
+    char string[12];
+    string[12] = 0;
 
-    int i = 0;
-    while (FAT_ReadEntry(&disk, fd, &entry) && i++ < 10)
-    {
-        printf(" ");
-        for (int i = 0; i < 11; i++)
-            printc(entry.Name[i]);
-        printf("\n");
-    }
-    FAT_Close(fd);
-
-    printf("success?\n");
+    FAT_Read(&disk, 1, string);
+    printf(string);
+    printf("success?\n\r");
 
 halt:
     for(;;);
+
 }
 

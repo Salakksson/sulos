@@ -11,6 +11,7 @@ int max (int n, int m)
         case false:
             return m;
     }
+    return 0;
 }
 
 int min (int n, int m)
@@ -22,6 +23,7 @@ int min (int n, int m)
         case false:
             return n;
     }
+    return 0;
 }
 
 // returns length of integer not including sign
@@ -55,3 +57,5 @@ dword mod(register dword num, register dword mod)
     register dword cnum = num / mod;
     return num - cnum * mod;
 }
+
+

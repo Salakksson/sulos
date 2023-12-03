@@ -1,5 +1,5 @@
 #include "stdio.h"
-
+#include "cpu.h"
 //sometimes shit can fuck up if length is longer than an integer, need to implement size_t or whatever
 char* str_reverse(char* str)
 {
@@ -73,145 +73,216 @@ char* itoa(int value, char* str, int base)
     return str;
 }
 
-// My implementation of printf
-// max 255 args
-void _cdecl printf(char* str, ...)
+
+#define PRINTF_STATE_NORMAL         0
+#define PRINTF_STATE_LENGTH         1
+#define PRINTF_STATE_LENGTH_SHORT   2
+#define PRINTF_STATE_LENGTH_LONG    3
+#define PRINTF_STATE_SPEC           4
+
+#define PRINTF_LENGTH_DEFAULT       0
+#define PRINTF_LENGTH_SHORT_SHORT   1
+#define PRINTF_LENGTH_SHORT         2
+#define PRINTF_LENGTH_LONG          3
+#define PRINTF_LENGTH_LONG_LONG     4
+
+const char g_HexChars[] = "0123456789abcdef";
+
+int* printf_number(int* argp, int length, bool sign, int radix)
 {
-    // if (!str[0])
-    // {
-    //     return;
-    // }
-            // wcc has a bug which makes this fuck the code up
+    char buffer[32];
+    unsigned long long number;
+    int number_sign = 1;
+    int pos = 0;
 
-    int* argv = (int*)&str + sizeof(str)/sizeof(int);        // Use stack manipulation to find arg array
+    // process length
+    switch (length)
+    {
+        case PRINTF_LENGTH_SHORT_SHORT:
+        case PRINTF_LENGTH_SHORT:
+        case PRINTF_LENGTH_DEFAULT:
+            if (sign)
+            {
+                int n = *argp;
+                if (n < 0)
+                {
+                    n = -n;
+                    number_sign = -1;
+                }
+                number = (unsigned long long)n;
+            }
+            else
+            {
+                number = *(unsigned int*)argp;
+            }
+            argp++;
+            break;
 
-    char* buffer;
-    char* argstr;
-    int state = 1;
-    int width = 0;
-    bool padding = false;
+        case PRINTF_LENGTH_LONG:
+            if (sign)
+            {
+                long int n = *(long int*)argp;
+                if (n < 0)
+                {
+                    n = -n;
+                    number_sign = -1;
+                }
+                number = (unsigned long long)n;
+            }
+            else
+            {
+                number = *(unsigned long int*)argp;
+            }
+            argp += 2;
+            break;
 
-    int number;
-    char int_str[10];
+        case PRINTF_LENGTH_LONG_LONG:
+            if (sign)
+            {
+                long long int n = *(long long int*)argp;
+                if (n < 0)
+                {
+                    n = -n;
+                    number_sign = -1;
+                }
+                number = (unsigned long long)n;
+            }
+            else
+            {
+                number = *(unsigned long long int*)argp;
+            }
+            argp += 4;
+            break;
+    }
 
-    int len;
-    int pads;
+    // convert number to ASCII
+    do 
+    {
+        dword rem;
+        x86_div64_32(number, radix, &number, &rem);
+        buffer[pos++] = g_HexChars[rem];
+    } while (number > 0);
 
-    while(state)
+    // add sign
+    if (sign && number_sign < 0)
+        buffer[pos++] = '-';
+
+    // print number in reverse order
+    while (--pos >= 0)
+        printc(buffer[pos]);
+
+    return argp;
+}
+
+void _cdecl printf(const char* fmt, ...)
+{
+    int* argp = (int*)&fmt;
+    int state = PRINTF_STATE_NORMAL;
+    int length = PRINTF_LENGTH_DEFAULT;
+    int radix = 10;
+    bool sign = false;
+
+    argp++;
+
+    while (*fmt)
     {
         switch (state)
         {
-            case 1:
-                if (*str == 0)
+            case PRINTF_STATE_NORMAL:
+                switch (*fmt)
                 {
-                    state = 0; // end printing
-                    break;
+                    case '%':   state = PRINTF_STATE_LENGTH;
+                                break;
+                    default:    printc(*fmt);
+                                break;
                 }
-                if (*str == '%')
-                {
-                    if (*(str+1) != '%')
-                    {
-                        str++;
-                        state = 3; // print argument
-                        break;
-                    }
-                    printc('%');
-                    str+= 2;
-                }
-                printc(*str);
-                if (*str == '\n')
-                    printc('\r');
-                str++;
                 break;
-            case 2:
-                padding = false;
-                if (*str == '0')
-                {
-                    padding = true;
-                    str++;
-                }
-                while (*str >= '0' && *str <= '9')
-                {
-                    width*= 10;
-                    width+= (*str - '0');
-                }
-                state = 3;
-                break;
-            case 3:
-                switch (*str)
-                {
-                    case 's':
-                        argstr = *argv;
-                        while (*argstr)
-                        {
-                            printc(*argstr);
-                            if (*argstr == '\n')
-                                printc('\r');
-                            argstr++;
 
-                        }
-                        argv += sizeof(char*)/sizeof(int);
-                        state = 1;
-                        str++;
-                        break;
-                    case 'c':
-                        printc(*argv);
-                        if (*argv == '\n')
-                            printc('r');
-                        argv += sizeof(char)/sizeof(int);
-                        state = 1;
-                        str++;
-                        break;
+            case PRINTF_STATE_LENGTH:
+                switch (*fmt)
+                {
+                    case 'h':   length = PRINTF_LENGTH_SHORT;
+                                state = PRINTF_STATE_LENGTH_SHORT;
+                                break;
+                    case 'l':   length = PRINTF_LENGTH_LONG;
+                                state = PRINTF_STATE_LENGTH_LONG;
+                                break;
+                    default:    goto PRINTF_STATE_SPEC_;
+                }
+                break;
+
+            case PRINTF_STATE_LENGTH_SHORT:
+                if (*fmt == 'h')
+                {
+                    length = PRINTF_LENGTH_SHORT_SHORT;
+                    state = PRINTF_STATE_SPEC;
+                }
+                else goto PRINTF_STATE_SPEC_;
+                break;
+
+            case PRINTF_STATE_LENGTH_LONG:
+                if (*fmt == 'l')
+                {
+                    length = PRINTF_LENGTH_LONG_LONG;
+                    state = PRINTF_STATE_SPEC;
+                }
+                else goto PRINTF_STATE_SPEC_;
+                break;
+
+            case PRINTF_STATE_SPEC:
+            PRINTF_STATE_SPEC_:
+                switch (*fmt)
+                {
+                    case 'c':   printc((char)*argp);
+                                argp++;
+                                break;
+
+                    case 's':   if (length == PRINTF_LENGTH_LONG || length == PRINTF_LENGTH_LONG_LONG) 
+                                {
+                                    prints(*(char**)argp);
+                                    argp += 2;
+                                }
+                                else 
+                                {
+                                    prints(*(const char**)argp);
+                                    argp++;
+                                }
+                                break;
+
+                    case '%':   printc('%');
+                                break;
+
                     case 'd':
-                        number = *argv;
-                        int_str;
-                        itoa(number, int_str, 10);
+                    case 'i':   radix = 10; sign = true;
+                                argp = printf_number(argp, length, sign, radix);
+                                break;
 
-                        len = strlen(int_str);
-                        pads = width - len;
+                    case 'u':   radix = 10; sign = false;
+                                argp = printf_number(argp, length, sign, radix);
+                                break;
 
-                        while (padding && (pads > 0))
-                        {
-                            printc('0');         // print zeros for padding
-                            pads--;
-                        }
-                        buffer = int_str;
-                        while (*buffer)
-                        {
-                            printc(*buffer);
-                            buffer++;
-                        }
-                        argv += sizeof(char*)/sizeof(int);
-                        state = 1;
-                        str++;
-                        break;
+                    case 'X':
                     case 'x':
-                        number = *argv;
-                        int_str;
-                        itoa(number, int_str, 16);
+                    case 'p':   radix = 16; sign = false;
+                                argp = printf_number(argp, length, sign, radix);
+                                break;
 
-                        len = strlen(int_str);
-                        pads = width - len;
+                    case 'o':   radix = 8; sign = false;
+                                argp = printf_number(argp, length, sign, radix);
+                                break;
 
-                        while (padding && (pads > 0))
-                        {
-                            printc('0');         // print zeros for padding
-                            pads--;
-                        }
-                        buffer = int_str;
-                        while (*buffer)
-                        {
-                            printc(*buffer);
-                            buffer++;
-                        }
-                        argv += sizeof(char*)/sizeof(int);
-                        state = 1;
-                        str++;
-                    break;
+                    // ignore invalid spec
+                    default:    break;
                 }
 
-            default:
+                // reset state
+                state = PRINTF_STATE_NORMAL;
+                length = PRINTF_LENGTH_DEFAULT;
+                radix = 10;
+                sign = false;
                 break;
         }
+
+        fmt++;
     }
 }

@@ -5,7 +5,7 @@ SRC_DIR=src
 BUILD_DIR=build
 FILES_DIR=fs
 
-TARGET=pushos
+TARGET=sulos
 
 .PHONY: all $(TARGET) kernel bootloader clean always
 
